@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+<!-- 通过编写配置文件，将创建好的JavaBean交给IoC容器进行管理
+     name(id)表示bean的名字 全局唯一
+     class表示具体的某个JavaBean
+     scope表示作用域 设置 singleton单例模式 或者 prototype原型模式，默认为单例模式
+     init-method表示初始化方法
+     destroy-method表示销毁方法
+     depends-on设置JavaBean的加载顺序 ""中的先构造,""中填name的值
+     autowire设置自动注入-->
+    <bean name="student" class="com.test.bean.Student" autowire="byType">
+        <property name="name" value="小明"></property>
+        <property name="age" value="10"></property>
+    </bean>
+
+    <bean name="test" class="com.test.aop.AopTest"></bean>
+    <bean name="before" class="com.test.aop.AopAdvice"></bean>
+
+    <!-- aop配置 -->
+    <aop:config>
+        <!-- ref指定bean的名称（name）-->
+        <aop:aspect ref="test">
+            <!-- 切点位置配置 -->
+            <aop:pointcut id="stu" expression="execution(* com.test.bean.Student.say(String))"/>
+            <aop:after-returning method="after" pointcut-ref="stu"/>
+            <aop:around method="around" pointcut-ref="stu"/>
+        </aop:aspect>
+
+
+    </aop:config>
+    <!-- 使用接口定义Aop -->
+    <aop:config>
+        <aop:pointcut id="stu" expression="execution(* com.test.bean.Student.say(String))"/>
+        <aop:advisor advice-ref="before" pointcut-ref="stu"/>
+    </aop:config>
+</beans>
