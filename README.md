@@ -164,6 +164,6 @@ SqlSessionTemplate和Mapper之间的关系就不需要深究，Spring在Ioc容�
         dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/study");
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername("root");
-        dataSource.setPassword("1607980231..");
+        dataSource.setPassword("123456");
         return dataSource;
     }
